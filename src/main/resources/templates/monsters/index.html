@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lxmls:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/style :: style}"></th:block>
+    <title>Lista Mostri</title>
+</head>
+
+<body>
+    <header>
+        <th:block th:replace="~{fragments/nav :: nav}"></th:block>
+    </header>
+    <main>
+        <div class="container  mt-3 ">
+            <div class="row mt-5 bg_custom pt-3">
+                <div class="col-12 d-flex justify-content-between">
+                    <div>
+                        <a class="btn btn-primary" href="/monsters/create"> +</a>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            Ordina per:
+                        </div>
+                        <div class="mx-3">
+                            <a href="/monsters/monstersByLevelAsc" class="btn btn-primary">Sfida <i
+                                    class="bi bi-arrow-down-circle"></i></a>
+                        </div>
+                        <div>
+                            <a href="/monsters/monstersByLevelDesc" class="btn btn-primary">Sfida <i
+                                    class="bi bi-arrow-up-circle"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 mt-3" th:if="${monsters.size() > 0}">
+                    <h3 class="">LISTA DEI MOSTRI:</h3>
+                    <table class="mt-3 table">
+                        <thead>
+                            <tr>
+                                <th> Name</th>
+                                <th> Grado di Sfida</th>
+                                <th>Apri</th>
+                                <th>Modifica</th>
+                                <th>Elimina</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="monster : ${monsters}" th:object="${monster}">
+                                <td>[[*{name}]]</td>
+                                <td>
+                                    [[*{Level}]]
+                                </td>
+                                <td>
+                                    <a th:href="@{/monsters/{id}(id=*{id})}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-arrow-right-square"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/monsters/edit/{id}(id=*{id})}" class="btn btn-success btn-sm">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div
+                                        th:replace="~{fragments/modal :: modal(*{id}, 'Eliminare il mostro definitivamente?',@{/monsters/delete/{id}(id=*{id})})}">
+                                    </div>
+
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+
+
+                    </table>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-5 border-top" th:unless="${monsters.size() > 0}">
+
+                    <p class="fs-5 mt-3"> nessun mostro nel database</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+    <th:block th:replace="~{fragments/script :: scripts}"></th:block>
+</body>

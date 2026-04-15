@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lxmls:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/style :: style}"></th:block>
+    <title th:if="${edit}">Modifica Mostro</title>
+    <title th:unless="${edit}">Crea Mostro</title>
+</head>
+
+<body class="bg-dark">
+    <header>
+        <th:block th:replace="~{fragments/nav :: nav}"></th:block>
+    </header>
+    <main>
+        <div class="container bg-light">
+            <form id="monster-create-form" th:action="${edit} ? @{|/monsters/edit/${monster.id}|} : @{/monsters/create}"
+                method="post" th:object="${monster}" enctype="multipart/form-data">
+                <div class="pt-3 mt-3" th:if="${#fields.hasErrors()}">
+                    <p class="text-danger">completa i campi con un errore</p>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-4 mb-4">
+                        <div class="mt-3">
+                            <label class="form-label" for="name">Nome del Mostro:</label>
+                            <input class="form-control" type="text" id="name" placeholder="es: goblin"
+                                th:field="*{name}" th:errorClass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                                <ul>
+                                    <li th:each="error : ${#fields.errors('name')}" th:text="${error}" />
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <div class="mt-3">
+                            <label class="form-label" for="armorClass">Classe Armatura:</label>
+                            <input class="form-control" type="number" id="armorClass" placeholder="0"
+                                th:field="*{armorClass}" th:errorClass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('armorClass')}">
+                                <ul>
+                                    <li th:each="error : ${#fields.errors('armorClass')}" th:text="${error}" />
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <div class="mt-3">
+                            <label class="form-label" for="lifePoint">Punti ferita:</label>
+                            <input class="form-control" type="number" id="lifePoint" placeholder="0"
+                                th:field="*{lifePoint}" th:errorClass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('lifePoint')}">
+                                <ul>
+                                    <li th:each="error : ${#fields.errors('lifePoint')}" th:text="${error}" />
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 border-top border-bottom pb-4">
+                        <div class="mt-3">
+                            <label class="form-label" for="moviment">Velocità:</label>
+                            <input class="form-control" type="text" id="moviment"
+                                placeholder="es: movimento: 9m, volare 12m" th:field="*{moviment}"
+                                th:errorClass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('moviment')}">
+                                <ul>
+                                    <li th:each="error : ${#fields.errors('moviment')}" th:text="${error}" />
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-4">
+                            <div class="mt-3">
+                                <label class="form-label" for="strength">Forza:</label>
+                                <input class="form-control" type="number" id="strength" placeholder="0"
+                                    th:field="*{strength}" th:errorClass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('strength')}">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('strength')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-4">
+                            <div class="mt-3">
+                                <label class="form-label" for="dexterity">Destrezza:</label>
+                                <input class="form-control" type="number" id="dexterity" placeholder="0"
+                                    th:field="*{dexterity}" th:errorClass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('dexterity')}">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('dexterity')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-4">
+                            <div class="mt-3">
+                                <label class="form-label" for="constitution">Costituzione:</label>
+                                <input class="form-control" type="number" id="constitution" placeholder="0"
+                                    th:field="*{constitution}" th:errorClass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('constitution')}">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('constitution')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-4">
+                            <div class="mt-3">
+                                <label class="form-label" for="intelligence">Inteligenza:</label>
+                                <input class="form-control" type="number" id="intelligence" placeholder="0"
+                                    th:field="*{intelligence}" th:errorClass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('intelligence')}">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('intelligence')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-4">
+                            <div class="mt-3">
+                                <label class="form-label" for="wisdom">Sagezza:</label>
+                                <input class="form-control" type="number" id="wisdom" placeholder="0"
+                                    th:field="*{wisdom}" th:errorClass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('wisdom')}">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('wisdom')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-4">
+                            <div class="mt-3">
+                                <label class="form-label" for="charisma">Carisma:</label>
+                                <input class="form-control" type="number" id="charisma" placeholder="0"
+                                    th:field="*{charisma}" th:errorClass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('charisma')}">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('charisma')}" th:text="${error}" />
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 border-bottom pb-4 ">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="mt-3">
+                                    <label class="form-label" for="savingThrow">Tiri Salvezza:</label>
+                                    <textarea class="form-control" type="file" id="savingThrow" placeholder="Cos +4"
+                                        th:field="*{savingThrow}" th:errorClass="is-invalid"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('savingThrow')}">
+                                        <ul>
+                                            <li th:each="error : ${#fields.errors('savingThrow')}" th:text="${error}" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="mt-3">
+                                    <label class="form-label" for="skills">Abilità:</label>
+                                    <textarea class="form-control" type="file" id="skills" placeholder="Furtività +6"
+                                        th:field="*{skills}" th:errorClass="is-invalid"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('skills')}">
+                                        <ul>
+                                            <li th:each="error : ${#fields.errors('skills')}" th:text="${error}" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="mt-3">
+                                    <label class="form-label" for="immunity">Immunità:</label>
+                                    <textarea class="form-control" type="file" id="immunity"
+                                        placeholder="Danni taglienti" th:field="*{immunity}"
+                                        th:errorClass="is-invalid"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('immunity')}">
+                                        <ul>
+                                            <li th:each="error : ${#fields.errors('immunity')}" th:text="${error}" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="mt-3">
+                                    <label class="form-label" for="resistence">Resistenze:</label>
+                                    <textarea class="form-control" type="file" id="resistence"
+                                        placeholder="Danni da fuoco" th:field="*{resistence}"
+                                        th:errorClass="is-invalid"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('resistence')}">
+                                        <ul>
+                                            <li th:each="error : ${#fields.errors('resistence')}" th:text="${error}" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                <div class="col-3">
+                                    <div class="mt-3">
+                                        <label class="form-label" for="sense">Sensi:</label>
+                                        <textarea class="form-control" type="file" id="sense" placeholder="Scurovisione"
+                                            th:field="*{sense}" th:errorClass="is-invalid"></textarea>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('sense')}">
+                                            <ul>
+                                                <li th:each="error : ${#fields.errors('sense')}" th:text="${error}" />
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label" for="image">Immagine:</label>
+                                    <input class="form-control" type="file" name="imageFile" id="image">
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="mt-3">
+                                        <label for="level" class="form-label">Grado di Sfida</label>
+                                        <input type="number" step="any" class="form-control" id="level"
+                                            th:field="*{level}" th:errorClass="is-invalid" placeholder="0">
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('level')}">
+                                            <ul>
+                                                <li th:each="error : ${#fields.errors('level')}" th:text="${error}" />
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 d-flex justify-content-center mt-4 pb-4">
+                    <button class="btn btn-primary" type="submit">Conferma</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>

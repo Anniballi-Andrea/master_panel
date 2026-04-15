@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lxmls:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/style :: style}"></th:block>
+    <title>Scheda: [[${monster.name}]]</title>
+</head>
+
+<body>
+    <header>
+        <th:block th:replace="~{fragments/nav :: nav}"></th:block>
+    </header>
+    <main>
+        <div class="container" th:object="${monster}">
+            <div class="row d-flex justify-content-center">
+                <div class="col-8 ">
+                    <div class="card mt-4 text-center ">
+                        <div class="card-header">
+                            <div class="fs-5 fw-bold">[[*{name}]]</div>
+                        </div>
+                        <div class="card-body card_dimensions">
+                            <div class="row">
+                                <div class="col-6">
+
+                                    <div class="img_container">
+                                        <img th:src="@{/images/{imageName}(imageName=*{image})}" alt=""
+                                            class="monster_image">
+                                    </div>
+
+                                </div>
+                                <div class="col-6 stats_container border-start">
+                                    <div class="row">
+                                        <div class="col-6 mb-3 border-bottom">
+                                            <div class="d-flex">
+                                                <div class="fw-bold">CA:</div>
+                                                <div class="ms-1">[[*{armorClass}]]</div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-6 mb-3 border-bottom">
+                                            <div class="d-flex">
+                                                <div class="fw-bold ">PF: </div>
+                                                <div class="ms-1"> [[*{lifePoint}]]</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row border-bottom pb-3">
+                                        <div class="col-12  ">
+                                            <div class="border-bottom fw-bold"> Movimento:</div>
+                                            <div>[[*{moviment}]]</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-4  border-bottom">
+                                            <div class="fw-bold">
+                                                FOR
+                                            </div>
+                                            <div>[[*{strength}]]</div>
+                                        </div>
+
+                                        <div class="col-4  border-bottom">
+                                            <div class="fw-bold">
+                                                DEX
+                                            </div>
+                                            <div>[[*{dexterity}]]</div>
+                                        </div>
+                                        <div class="col-4  border-bottom">
+                                            <div class="fw-bold">
+                                                COS
+                                            </div>
+                                            <div>[[*{constitution}]]</div>
+                                        </div>
+                                        <div class="col-4  border-bottom">
+                                            <div class="fw-bold">
+                                                INT
+                                            </div>
+                                            <div>[[*{intelligence}]]</div>
+                                        </div>
+
+                                        <div class="col-4  border-bottom">
+                                            <div class="fw-bold">
+                                                SAG
+                                            </div>
+                                            <div>[[*{wisdom}]]</div>
+                                        </div>
+                                        <div class="col-4  border-bottom">
+                                            <div class="fw-bold">
+                                                CAR
+                                            </div>
+                                            <div>[[*{charisma}]]</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row ">
+                                        <div th:unless="${#strings.isEmpty (monster.savingThrow)}"
+                                            class="col-12 border-bottom">
+                                            <div class="fw-bold">Tiri salvezza:</div>
+                                            <div>[[*{savingThrow}]]</div>
+                                        </div>
+                                        <div th:unless="${#strings.isEmpty (monster.sense)}"
+                                            class="col-12 border-bottom">
+                                            <div class="fw-bold">Sensi:</div>
+                                            <div>[[*{sense}]]</div>
+                                        </div>
+                                        <div th:unless="${#strings.isEmpty (monster.skills)}"
+                                            class="col-12 border-bottom">
+                                            <div class="fw-bold">Abilità:</div>
+                                            <div>[[*{skills}]]</div>
+                                        </div>
+                                        <div th:unless="${#strings.isEmpty (monster.immunity)}"
+                                            class="col-12 border-bottom">
+                                            <div class="fw-bold">Immunità:</div>
+                                            <div>[[*{immunity}]]</div>
+                                        </div>
+                                        <div th:unless="${#strings.isEmpty (monster.resistence)}"
+                                            class="col-12 border-bottom">
+                                            <div class="fw-bold">Resistenze:</div>
+                                            <div>[[*{resistence}]]</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="fw-bold">Tratti:</span>
+                                        <a class="btn btn-warning btn-sm" th:href="@{/monsters/{id}/trait(id=*{id})}">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </a>
+                                    </div>
+                                    <div th:if="${monster.trait.size() > 0}">
+                                        <div class="row border-bottom" th:each="trait : *{trait}">
+                                            <div class="col-12 mt-2 mb-2">
+                                                <div>
+                                                    <span class="fw-bold">[[${trait.name}]]: </span>
+                                                    <span>[[${trait.effect}]]</span>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <div>
+                                                        <div
+                                                            th:replace="~{fragments/modal :: modal(|trait-${trait.id}|, 'Eliminare il tratto?', @{/trait/delete/{id}(id=${trait.id})})}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="fw-bold">Azioni:</span>
+                                        <div>
+                                            <a class="btn btn-warning btn-sm"
+                                                th:href="@{/monsters/{id}/actions(id=*{id})}">
+                                                <i class="bi bi-plus-circle"></i>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    <div th:if="${monster.actions.size() > 0}">
+                                        <div class="row border-bottom" th:each="action : *{actions}">
+                                            <div class="col-12 mt-2 mb-2">
+                                                <div>
+                                                    <span class="fw-bold">[[${action.name}]]: </span>
+                                                    <span>[[${action.effect}]]</span>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <div
+                                                        th:replace="~{fragments/modal :: modal(|action-${action.id}|, 'Eliminare l\'azione?', @{/action/delete/{id}(id=${action.id})})}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="height"></div>
+    </footer>
+    <th:block th:replace="~{fragments/script :: scripts}"></th:block>
+</body>

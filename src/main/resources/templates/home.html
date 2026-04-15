@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lxmls:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/style :: style}"></th:block>
+    <title>Home Page</title>
+</head>
+
+<body>
+    <header>
+        <th:block th:replace="~{fragments/nav :: nav}"></th:block>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <h1>benvenuti</h1>
+                </div>
+                <div class="col-8">
+                    <h1>nella home page</h1>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
