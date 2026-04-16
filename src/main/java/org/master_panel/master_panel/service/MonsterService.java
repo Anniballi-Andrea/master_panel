@@ -18,6 +18,29 @@ public class MonsterService {
         return monsterRepo.findAll();
     }
 
+    public List<Monster> getAll(String name, String order) {
+
+        if ((name == null || name.isBlank()) && (order == null || order.isBlank())) {
+
+            return monsterRepo.findAll();
+        } else if ((order == null || order.isBlank())) {
+
+            return monsterRepo.findByNameContaining(name);
+
+        } else if ((name == null || name.isBlank()) && order.equals("asc")) {
+
+            return monsterRepo.findAllByNameContainingOrderByLevelAsc(name);
+
+        } else if ((name == null || name.isBlank()) && order.equals("desc")) {
+            return monsterRepo.findAllByNameContainingOrderByLevelDesc(name);
+
+        } else if (order.equals("asc")) {
+            return monsterRepo.findAllByNameContainingOrderByLevelAsc(name);
+        }
+        return monsterRepo.findAllByNameContainingOrderByLevelDesc(name);
+
+    }
+
     public List<Monster> getAllByNameAsc() {
         return monsterRepo.findAllByOrderByNameAsc();
     }
@@ -28,6 +51,16 @@ public class MonsterService {
 
     public List<Monster> getAllByLevelDesc() {
         return monsterRepo.findAllByOrderByLevelDesc();
+    }
+
+    public List<Monster> findByName(String name) {
+        List<Monster> monsters = monsterRepo.findByNameContaining(name);
+
+        return monsters;
+    }
+
+    public Optional<Monster> findById(Integer id) {
+        return monsterRepo.findById(id);
     }
 
     public Monster getById(Integer id) {
@@ -54,12 +87,6 @@ public class MonsterService {
     public void deleteById(Integer id) {
         Monster monster = getById(id);
         monsterRepo.delete(monster);
-    }
-
-    public List<Monster> findByName(String name) {
-        List<Monster> monsters = monsterRepo.findByNameContaining(name);
-
-        return monsters;
     }
 
 }

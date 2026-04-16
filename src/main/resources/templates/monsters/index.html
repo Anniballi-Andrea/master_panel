@@ -22,11 +22,12 @@
                             Ordina per:
                         </div>
                         <div class="mx-3">
-                            <a href="/monsters/monstersByLevelAsc" class="btn btn-primary">Sfida <i
+
+                            <a th:href="@{/monsters(name=${name}, order='asc')}" class="btn btn-primary">Sfida <i
                                     class="bi bi-arrow-down-circle"></i></a>
                         </div>
                         <div>
-                            <a href="/monsters/monstersByLevelDesc" class="btn btn-primary">Sfida <i
+                            <a th:href="@{/monsters(name=${name}, order='desc')}" class="btn btn-primary">Sfida <i
                                     class="bi bi-arrow-up-circle"></i></a>
                         </div>
 
@@ -38,13 +39,13 @@
                     <div class="d-flex justify-content-between">
                         <h3 class="">LISTA DEI MOSTRI:</h3>
                         <div>
-                            <form th:action="@{/monsters/searchByName}" method="get">
+                            <form th:action="@{/monsters}" method="get">
                                 <div class="d-flex align-items-center">
-                                    <input class="form-control me-2" type="text" name="name" placeholder="Search"
-                                        aria-label="Search" />
+                                    <input class="form-control me-2" type="text" name="name" th:value="${name}"
+                                        placeholder="cerca..." aria-label="Search" />
+                                    <input type="hidden" name="order" th:value="${order}">
                                     <button class="btn btn-primary " type="submit">cerca</button>
                                 </div>
-
                             </form>
 
                         </div>

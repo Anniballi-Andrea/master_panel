@@ -32,10 +32,13 @@ public class MonstersController {
     private MonsterService monsterService;
 
     @GetMapping
-    public String index(Model model) {
-        List<Monster> monsters = monsterService.getAllByNameAsc();
+    public String index(Model model, @RequestParam(required = false) String name,
+            @RequestParam(required = false) String order) {
+        List<Monster> monsters = monsterService.getAll(name, order);
 
         model.addAttribute("monsters", monsters);
+        model.addAttribute("name", name);
+        model.addAttribute("order", order);
         return "monsters/index";
     }
 
