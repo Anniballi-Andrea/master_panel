@@ -134,6 +134,14 @@
                                                     <span>[[${trait.effect}]]</span>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
+
+                                                    <div class="me-2">
+                                                        <a th:href="@{/trait/edit/{id}(id=${trait.id})}"
+                                                            class="btn btn-success btn-sm">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                    </div>
+
                                                     <div>
                                                         <div
                                                             th:replace="~{fragments/modal :: modal(|trait-${trait.id}|, 'Eliminare il tratto?', @{/trait/delete/{id}(id=${trait.id})})}">
@@ -163,8 +171,14 @@
                                                     <span>[[${action.effect}]]</span>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
+                                                    <div class="me-2">
+                                                        <a th:href="@{/actions/edit/{id}(id=${action.id})}"
+                                                            class="btn btn-success btn-sm">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                    </div>
                                                     <div
-                                                        th:replace="~{fragments/modal :: modal(|action-${action.id}|, 'Eliminare l\'azione?', @{/action/delete/{id}(id=${action.id})})}">
+                                                        th:replace="~{fragments/modal :: modal(|action-${action.id}|, 'Eliminare l\'azione?', @{/actions/delete/{id}(id=${action.id})})}">
                                                     </div>
                                                 </div>
                                             </div>

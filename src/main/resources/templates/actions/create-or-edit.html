@@ -3,7 +3,8 @@
 
 <head>
     <th:block th:replace="~{fragments/style :: style}"></th:block>
-    <title>Aggiungi Tratto</title>
+    <title th:if="${edit}">Modifica Azione</title>
+    <title th:unless="${edit}">Crea Azione</title>
 </head>
 
 <body>
@@ -14,16 +15,19 @@
         <div class="container bg-light mt-3">
 
 
-            <form id="trait-create-form" th:action="@{/trait/create}" method="post" th:object="${trait}">
-                <h1>Aggiungi un tratto a [[*{monster.name}]]</h1>
+            <form id="trait-create-form"
+                th:action="${edit} ? @{/actions/edit/{id}(id=${action.id})} : @{/actions/create}" method="post"
+                th:object="${action}">
+                <h1 th:if="${edit}">Modifica un azione a: [[*{monster.name}]]</h1>
+                <h1 th:unless="${edit}">Aggiungi un azione a: [[*{monster.name}]]</h1>
 
                 <input type="hidden" th:field="*{monster.id}">
                 <div class="mb-3" th:if="${#fields.hasErrors()}">
                     <p class="text-danger">completa i campi con un errore</p>
                 </div>
                 <div class="mt-3">
-                    <label class="form-label" for="name">Tratto:</label>
-                    <input class="form-control" type="text" id="name" placeholder="inserisci il nome del tratto"
+                    <label class="form-label" for="name">Azione:</label>
+                    <input class="form-control" type="text" id="name" placeholder="inserisci il nome dell'azione"
                         th:field="*{name}" th:errorClass="is-invalid">
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
                         <ul>
@@ -33,7 +37,7 @@
                 </div>
                 <div class="my-3 pb-4">
                     <label class="form-label" for="effect">Descrizione:</label>
-                    <textarea class="form-control" type="file" id="effect" placeholder="inserisci cosa fa il tratto"
+                    <textarea class="form-control" type="file" id="effect" placeholder="inserisci cosa fa l'azione"
                         th:field="*{effect}" th:errorClass="is-invalid"></textarea>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('effect')}">
                         <ul>

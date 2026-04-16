@@ -10,4 +10,8 @@ public interface MonsterRepository extends JpaRepository<Monster, Integer> {
     public List<Monster> findAllByOrderByLevelAsc();
 
     public List<Monster> findAllByOrderByLevelDesc();
+
+    public List<Monster> findAllByOrderByNameAsc();
+
+    public List<Monster> findByNameContaining(String name);
 }

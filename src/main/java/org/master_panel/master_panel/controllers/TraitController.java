@@ -25,7 +25,7 @@ public class TraitController {
     public String store(@Valid @ModelAttribute("trait") Trait formTrait, Model model, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "trait/create";
+            return "trait/create-or-edit";
         }
 
         repo.save(formTrait);
@@ -36,20 +36,33 @@ public class TraitController {
     @GetMapping("/edit/{id}")
     public String editTrait(@PathVariable Integer id, Model model) {
         model.addAttribute("trait", repo.findById(id).get());
+        model.addAttribute("edit", true);
 
-        return "trait/editTrait";
+        return "trait/create-or-edit";
     }
 
     @PostMapping("/edit/{id}")
     public String edit(@Valid @ModelAttribute("trait") Trait formTrait, Model model, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "trait/editTrait";
+            return "trait/create-or-edit";
         }
 
         repo.save(formTrait);
 
         return "redirect:/monsters/" + formTrait.getMonster().getId();
 
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+
+        Trait traitToDelete = repo.findById(id).get();
+
+        Integer monsterId = traitToDelete.getMonster().getId();
+
+        repo.delete(traitToDelete);
+
+        return "redirect:/monsters/" + monsterId;
     }
 }

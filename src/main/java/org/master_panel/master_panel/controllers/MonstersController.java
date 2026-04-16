@@ -9,7 +9,7 @@ import java.util.List;
 import org.master_panel.master_panel.model.Action;
 import org.master_panel.master_panel.model.Monster;
 import org.master_panel.master_panel.model.Trait;
-import org.master_panel.master_panel.repository.MonsterRepository;
+import org.master_panel.master_panel.service.MonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +29,11 @@ import jakarta.validation.Valid;
 public class MonstersController {
 
     @Autowired
-    private MonsterRepository repo;
+    private MonsterService monsterService;
 
     @GetMapping
     public String index(Model model) {
-        List<Monster> monsters = repo.findAll();
+        List<Monster> monsters = monsterService.getAllByNameAsc();
 
         model.addAttribute("monsters", monsters);
         return "monsters/index";
@@ -41,7 +41,7 @@ public class MonstersController {
 
     @GetMapping("/monstersByLevelAsc")
     private String byLevelAsc(Model model) {
-        List<Monster> monsters = repo.findAllByOrderByLevelAsc();
+        List<Monster> monsters = monsterService.getAllByLevelAsc();
         model.addAttribute("monsters", monsters);
         return "monsters/index";
 
@@ -49,7 +49,7 @@ public class MonstersController {
 
     @GetMapping("/monstersByLevelDesc")
     private String byLevelDesc(Model model) {
-        List<Monster> monsters = repo.findAllByOrderByLevelDesc();
+        List<Monster> monsters = monsterService.getAllByLevelDesc();
         model.addAttribute("monsters", monsters);
         return "monsters/index";
 
@@ -57,11 +57,11 @@ public class MonstersController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Integer id, Model model) {
-        Monster monster = repo.findById(id).get();
+        Monster monster = monsterService.getById(id);
 
         model.addAttribute("monster", monster);
 
-        return "monsters/monsterPage";
+        return "monsters/show";
     }
 
     @GetMapping("/create")
@@ -74,8 +74,6 @@ public class MonstersController {
     public String storeWithImage(@Valid @ModelAttribute("monster") Monster formMonster, BindingResult bindingResult,
             @RequestParam(name = "imageFile", required = false) MultipartFile file, Model model) {
         if (bindingResult.hasErrors()) {
-            System.out.println("-------------------------------------------");
-            System.out.println("-------------------------------------------");
             bindingResult.getAllErrors().forEach(System.out::println);
             return "monsters/create-or-edit";
         }
@@ -90,9 +88,6 @@ public class MonstersController {
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
-
-                System.out.println("Salvataggio in corso in: " + uploadPath.toAbsolutePath());
-
                 Path filePath = uploadPath.resolve(fileName);
 
                 Files.write(filePath, file.getBytes());
@@ -106,13 +101,13 @@ public class MonstersController {
             }
         }
 
-        repo.save(formMonster);
+        monsterService.create(formMonster);
         return "redirect:/monsters";
     }
 
     @GetMapping("/edit/{id}")
     public String editMonster(@PathVariable Integer id, Model model) {
-        model.addAttribute("monster", repo.findById(id).get());
+        model.addAttribute("monster", monsterService.getById(id));
         model.addAttribute("edit", true);
         return "monsters/create-or-edit";
     }
@@ -151,35 +146,36 @@ public class MonstersController {
             }
         }
 
-        repo.save(formMonster);
+        monsterService.update(formMonster);
 
         return "redirect:/monsters";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
-        repo.deleteById(id);
+        monsterService.deleteById(id);
+        ;
         return "redirect:/monsters";
     }
 
     @GetMapping("/{id}/trait")
     public String trait(@PathVariable Integer id, Model model) {
         Trait trait = new Trait();
-        trait.setMonster(repo.findById(id).get());
+        trait.setMonster(monsterService.getById(id));
 
         model.addAttribute("trait", trait);
 
-        return "trait/createTrait";
+        return "trait/create-or-edit";
     }
 
     @GetMapping("/{id}/actions")
     public String actions(@PathVariable Integer id, Model model) {
         Action action = new Action();
 
-        action.setMonster(repo.findById(id).get());
+        action.setMonster(monsterService.getById(id));
 
         model.addAttribute("action", action);
 
-        return "actions/createActions";
+        return "actions/create-or-edit";
     }
 }

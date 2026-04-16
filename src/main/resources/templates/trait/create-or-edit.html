@@ -3,7 +3,8 @@
 
 <head>
     <th:block th:replace="~{fragments/style :: style}"></th:block>
-    <title>Modifica Tratto</title>
+    <title th:if="${edit}">Modifica Tratto</title>
+    <title th:unless="${edit}">Crea Tratto</title>
 </head>
 
 <body>
@@ -14,9 +15,10 @@
         <div class="container bg-light mt-3">
 
 
-            <form id="trait-create-form" th:action="@{/trait/edit/{id}(id=${trait.id})}" method="post"
-                th:object="${trait}">
-                <h1>Modifica tratto tratto a [[*{monster.name}]]</h1>
+            <form id="trait-create-form" th:action="${edit} ? @{/trait/edit/{id}(id=${trait.id})} :@{/trait/create}"
+                method="post" th:object="${trait}">
+                <h1 th:if="${edit}">Modifica un tratto a: [[*{monster.name}]]</h1>
+                <h1 th:unless="${edit}">Aggiungi un tratto a: [[*{monster.name}]]</h1>
 
                 <input type="hidden" th:field="*{monster.id}">
                 <div class="mb-3" th:if="${#fields.hasErrors()}">
