@@ -1,7 +1,7 @@
 package org.master_panel.master_panel.controllers;
 
 import org.master_panel.master_panel.model.Trait;
-import org.master_panel.master_panel.repository.TraitRepository;
+import org.master_panel.master_panel.service.TraitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 public class TraitController {
 
     @Autowired
-    private TraitRepository repo;
+    private TraitService traitService;
 
     @PostMapping("/create")
     public String store(@Valid @ModelAttribute("trait") Trait formTrait, Model model, BindingResult bindingResult) {
@@ -28,14 +28,14 @@ public class TraitController {
             return "trait/create-or-edit";
         }
 
-        repo.save(formTrait);
+        traitService.create(formTrait);
 
         return "redirect:/monsters/" + formTrait.getMonster().getId();
     }
 
     @GetMapping("/edit/{id}")
     public String editTrait(@PathVariable Integer id, Model model) {
-        model.addAttribute("trait", repo.findById(id).get());
+        model.addAttribute("trait", traitService.getById(id));
         model.addAttribute("edit", true);
 
         return "trait/create-or-edit";
@@ -48,7 +48,7 @@ public class TraitController {
             return "trait/create-or-edit";
         }
 
-        repo.save(formTrait);
+        traitService.update(formTrait);
 
         return "redirect:/monsters/" + formTrait.getMonster().getId();
 
@@ -57,11 +57,11 @@ public class TraitController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
 
-        Trait traitToDelete = repo.findById(id).get();
+        Trait traitToDelete = traitService.getById(id);
 
         Integer monsterId = traitToDelete.getMonster().getId();
 
-        repo.delete(traitToDelete);
+        traitService.delete(traitToDelete);
 
         return "redirect:/monsters/" + monsterId;
     }

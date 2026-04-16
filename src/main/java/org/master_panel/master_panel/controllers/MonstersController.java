@@ -55,6 +55,15 @@ public class MonstersController {
 
     }
 
+    @GetMapping("/searchByName")
+    public String searchName(@RequestParam(name = "name") String name, Model model) {
+        List<Monster> pizzas = monsterService.findByName(name);
+
+        model.addAttribute("monsters", pizzas);
+
+        return "monsters/index";
+    }
+
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Integer id, Model model) {
         Monster monster = monsterService.getById(id);
