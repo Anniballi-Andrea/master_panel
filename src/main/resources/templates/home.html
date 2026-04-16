@@ -11,15 +11,56 @@
         <th:block th:replace="~{fragments/nav :: nav}"></th:block>
     </header>
     <main>
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <h1>benvenuti</h1>
-                </div>
-                <div class="col-8">
-                    <h1>nella home page</h1>
+        <div class="container ">
+            <div class="row bg_custom mt-5 py-3 justify-content-center">
+                <div class="col-12">
+                    <section>
+                        <h1>Benvenuti nella homepage della backend della mia applicazione</h1>
+                        <p>
+                            Questa parte dell'applicazione nasce con lo scopo di gestire i dati che verranno mandati
+                            nella frontend.
+
+                        </p>
+                        <p>
+                            All'interno di questa applicazione sarà possibile visualizzare l'elenco completo dei mostri
+                            inseriti nel db, riordinarli per grado di sfida o cercarne uno specifico.
+                        </p>
+                        <p>Dall'elenco dei mostri sarà possibile inoltre accedere alla sua scheda personale con un
+                            illustrazione e l'elenco di tutte le sue capacità in un formato molto simile a quello dei
+                            vari manuali ufficiali, con alcune modifiche dovute all'utilizizzo finale dell'applicazione
+                        </p>
+                        <div class="col-12">
+                            <div class="row justify-content-between">
+                                <div class="col-5">
+                                    <h5>scheda del manuale:</h5>
+                                    <img th:src="@{/images/Goblin.PNG}" alt="" class="home-image">
+                                </div>
+                                <div class="col-6">
+                                    <h5>card dell'applicazione:</h5>
+                                    <img class="home-image" th:src="@{/images/home-example.JPG}" alt="">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex mt-4">
+                            <p>
+                                per procedere alla navigazione cliccare sulla navbar la voce tutti i mostri. In
+                                alternativa
+                            </p>
+                            <div>
+                                <a class="btn btn-sm btn-primary ms-2" href="/monsters">premere qui</a>
+                            </div>
+                        </div>
+
+
+
+                    </section>
                 </div>
             </div>
         </div>
     </main>
+    <footer>
+
+    </footer>
 </body>

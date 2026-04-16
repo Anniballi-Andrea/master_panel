@@ -19,6 +19,15 @@
                     </li>
                 </ul>
             </div>
+            <div class="user-info d-flex">
+                Utente: <span sec:authentication="name" class="fw-bold ms-1 me-2"></span>
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    Role: <span class="fw-bold me-2" sec:authentication="principal.authorities"></span>
+                </div>
+                <a class="btn btn-sm btn-outline-primary" href="/logout">Sign out</a>
+
+
+            </div>
         </div>
     </nav>
 

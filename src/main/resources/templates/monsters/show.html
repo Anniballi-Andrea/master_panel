@@ -28,17 +28,17 @@
                                     </div>
 
                                 </div>
-                                <div class="col-6 stats_container border-start">
+                                <div class="col-6 stats_container border-start ">
                                     <div class="row">
-                                        <div class="col-6 mb-3 border-bottom">
-                                            <div class="d-flex">
+                                        <div class="col-6 mb-3 border-bottom ">
+                                            <div class="d-flex justify-content-center">
                                                 <div class="fw-bold">CA:</div>
                                                 <div class="ms-1">[[*{armorClass}]]</div>
                                             </div>
 
                                         </div>
-                                        <div class="col-6 mb-3 border-bottom">
-                                            <div class="d-flex">
+                                        <div class="col-6 mb-3 border-bottom ">
+                                            <div class="d-flex justify-content-center">
                                                 <div class="fw-bold ">PF: </div>
                                                 <div class="ms-1"> [[*{lifePoint}]]</div>
                                             </div>
@@ -46,8 +46,8 @@
                                         </div>
                                     </div>
                                     <div class="row border-bottom pb-3">
-                                        <div class="col-12  ">
-                                            <div class="border-bottom fw-bold"> Movimento:</div>
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <div class=" fw-bold me-1"> Movimento:</div>
                                             <div>[[*{moviment}]]</div>
                                         </div>
                                     </div>
@@ -122,7 +122,8 @@
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <span class="fw-bold">Tratti:</span>
-                                        <a class="btn btn-warning btn-sm" th:href="@{/monsters/{id}/trait(id=*{id})}">
+                                        <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-warning btn-sm"
+                                            th:href="@{/monsters/{id}/trait(id=*{id})}">
                                             <i class="bi bi-plus-circle"></i>
                                         </a>
                                     </div>
@@ -136,14 +137,15 @@
                                                 <div class="d-flex justify-content-end">
 
                                                     <div class="me-2">
-                                                        <a th:href="@{/trait/edit/{id}(id=${trait.id})}"
+                                                        <a sec:authorize="hasAuthority('ADMIN')"
+                                                            th:href="@{/trait/edit/{id}(id=${trait.id})}"
                                                             class="btn btn-success btn-sm">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
                                                     </div>
 
                                                     <div>
-                                                        <div
+                                                        <div sec:authorize="hasAuthority('ADMIN')"
                                                             th:replace="~{fragments/modal :: modal(|trait-${trait.id}|, 'Eliminare il tratto?', @{/trait/delete/{id}(id=${trait.id})})}">
                                                         </div>
                                                     </div>
@@ -156,7 +158,7 @@
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <span class="fw-bold">Azioni:</span>
                                         <div>
-                                            <a class="btn btn-warning btn-sm"
+                                            <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-warning btn-sm"
                                                 th:href="@{/monsters/{id}/actions(id=*{id})}">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
@@ -172,12 +174,13 @@
                                                 </div>
                                                 <div class="d-flex justify-content-end">
                                                     <div class="me-2">
-                                                        <a th:href="@{/actions/edit/{id}(id=${action.id})}"
+                                                        <a sec:authorize="hasAuthority('ADMIN')"
+                                                            th:href="@{/actions/edit/{id}(id=${action.id})}"
                                                             class="btn btn-success btn-sm">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
                                                     </div>
-                                                    <div
+                                                    <div sec:authorize="hasAuthority('ADMIN')"
                                                         th:replace="~{fragments/modal :: modal(|action-${action.id}|, 'Eliminare l\'azione?', @{/actions/delete/{id}(id=${action.id})})}">
                                                     </div>
                                                 </div>
