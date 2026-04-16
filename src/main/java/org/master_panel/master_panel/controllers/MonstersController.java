@@ -116,18 +116,23 @@ public class MonstersController {
 
     @GetMapping("/edit/{id}")
     public String editMonster(@PathVariable Integer id, Model model) {
-        model.addAttribute("monster", monsterService.getById(id));
+        Monster monster = monsterService.getById(id);
+        model.addAttribute("monster", monster);
         model.addAttribute("edit", true);
+
         return "monsters/create-or-edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String updateMonster(@Valid @ModelAttribute("monster") Monster formMonster, BindingResult bindingResult,
+    public String updateMonster(@PathVariable("id") Integer id, @Valid @ModelAttribute("monster") Monster formMonster,
+            BindingResult bindingResult,
             Model model, @RequestParam(name = "imageFile", required = false) MultipartFile file) {
 
         if (bindingResult.hasErrors()) {
             return "monsters/create-or-edit";
         }
+
+        Monster editMonster = monsterService.getById(id);
 
         if (!file.isEmpty()) {
             try {
@@ -140,8 +145,6 @@ public class MonstersController {
                     Files.createDirectories(uploadPath);
                 }
 
-                System.out.println("Salvataggio in corso in: " + uploadPath.toAbsolutePath());
-
                 Path filePath = uploadPath.resolve(fileName);
 
                 Files.write(filePath, file.getBytes());
@@ -153,6 +156,8 @@ public class MonstersController {
                 e.printStackTrace();
 
             }
+        } else {
+            formMonster.setImage(editMonster.getImage());
         }
 
         monsterService.update(formMonster);
