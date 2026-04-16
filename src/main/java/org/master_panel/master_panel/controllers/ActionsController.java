@@ -2,7 +2,7 @@
 package org.master_panel.master_panel.controllers;
 
 import org.master_panel.master_panel.model.Action;
-import org.master_panel.master_panel.repository.ActionRepository;
+import org.master_panel.master_panel.service.ActionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 public class ActionsController {
 
     @Autowired
-    private ActionRepository repo;
+    private ActionsService actionService;
 
     @PostMapping("/create")
     public String store(@Valid @ModelAttribute("action") Action formAction, Model model, BindingResult bindingResult) {
@@ -29,14 +29,14 @@ public class ActionsController {
             return "actions/create-or-edit";
         }
 
-        repo.save(formAction);
+        actionService.create(formAction);
 
         return "redirect:/monsters/" + formAction.getMonster().getId();
     }
 
     @GetMapping("/edit/{id}")
     public String editAction(@PathVariable Integer id, Model model) {
-        model.addAttribute("action", repo.findById(id).get());
+        model.addAttribute("action", actionService.getById(id));
         model.addAttribute("edit", true);
 
         return "actions/create-or-edit";
@@ -49,7 +49,7 @@ public class ActionsController {
             return "actions/create-or-edit";
         }
 
-        repo.save(formAction);
+        actionService.update(formAction);
 
         return "redirect:/monsters/" + formAction.getMonster().getId();
 
@@ -58,11 +58,12 @@ public class ActionsController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
 
-        Action actionToDelete = repo.findById(id).get();
+        Action actionToDelete = actionService.getById(id);
 
         Integer monsterId = actionToDelete.getMonster().getId();
 
-        repo.delete(actionToDelete);
+        actionService.delete(actionToDelete);
+        ;
 
         return "redirect:/monsters/" + monsterId;
     }
