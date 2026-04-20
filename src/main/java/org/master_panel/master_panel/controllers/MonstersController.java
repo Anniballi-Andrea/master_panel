@@ -60,7 +60,7 @@ public class MonstersController {
 
     @GetMapping("/searchByName")
     public String searchName(@RequestParam(name = "name") String name, Model model) {
-        List<Monster> pizzas = monsterService.findByName(name);
+        List<Monster> pizzas = monsterService.findByNameContainig(name);
 
         model.addAttribute("monsters", pizzas);
 
@@ -84,33 +84,9 @@ public class MonstersController {
 
     @PostMapping("/create")
     public String storeWithImage(@Valid @ModelAttribute("monster") Monster formMonster, BindingResult bindingResult,
-            @RequestParam(name = "imageFile", required = false) MultipartFile file, Model model) {
+            Model model) {
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(System.out::println);
             return "monsters/create-or-edit";
-        }
-
-        if (!file.isEmpty()) {
-            try {
-                String uploadDir = "src/main/resources/static/images/";
-                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-                Path uploadPath = Paths.get(uploadDir);
-
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-                Path filePath = uploadPath.resolve(fileName);
-
-                Files.write(filePath, file.getBytes());
-
-                formMonster.setImage(fileName);
-
-            } catch (IOException e) {
-                System.err.println("Errore fatale di I/O: " + e.getMessage());
-                e.printStackTrace();
-
-            }
         }
 
         monsterService.create(formMonster);
@@ -127,40 +103,11 @@ public class MonstersController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateMonster(@PathVariable("id") Integer id, @Valid @ModelAttribute("monster") Monster formMonster,
-            BindingResult bindingResult,
-            Model model, @RequestParam(name = "imageFile", required = false) MultipartFile file) {
+    public String updateMonster(@Valid @ModelAttribute("monster") Monster formMonster,
+            BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "monsters/create-or-edit";
-        }
-
-        Monster editMonster = monsterService.getById(id);
-
-        if (!file.isEmpty()) {
-            try {
-                String uploadDir = "src/main/resources/static/images/";
-                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-                Path uploadPath = Paths.get(uploadDir);
-
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                Path filePath = uploadPath.resolve(fileName);
-
-                Files.write(filePath, file.getBytes());
-
-                formMonster.setImage(fileName);
-
-            } catch (IOException e) {
-                System.err.println("Errore fatale di I/O: " + e.getMessage());
-                e.printStackTrace();
-
-            }
-        } else {
-            formMonster.setImage(editMonster.getImage());
         }
 
         monsterService.update(formMonster);

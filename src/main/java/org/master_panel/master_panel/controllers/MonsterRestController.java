@@ -8,6 +8,7 @@ import org.master_panel.master_panel.service.MonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/monsters")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MonsterRestController {
 
     @Autowired
@@ -30,13 +32,24 @@ public class MonsterRestController {
         return monsters;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/serchById/{id}")
     public ResponseEntity<Monster> show(@PathVariable Integer id) {
         Optional<Monster> monsterAttempt = monsterService.findById(id);
         if (monsterAttempt.isEmpty()) {
             return new ResponseEntity<Monster>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Monster>(monsterAttempt.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/serchByName/{name}")
+    public ResponseEntity<Monster> showByName(@PathVariable String name) {
+        Integer monsterId = monsterService.findByName(name).getId();
+        Optional<Monster> monsterAttempt = monsterService.findById(monsterId);
+        if (monsterAttempt.isEmpty()) {
+            return new ResponseEntity<Monster>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Monster>(monsterAttempt.get(), HttpStatus.OK);
+
     }
 
     @PostMapping

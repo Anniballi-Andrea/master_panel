@@ -53,8 +53,14 @@ public class MonsterService {
         return monsterRepo.findAllByOrderByLevelDesc();
     }
 
-    public List<Monster> findByName(String name) {
+    public List<Monster> findByNameContainig(String name) {
         List<Monster> monsters = monsterRepo.findByNameContaining(name);
+
+        return monsters;
+    }
+
+    public Monster findByName(String name) {
+        Monster monsters = monsterRepo.findByName(name);
 
         return monsters;
     }
